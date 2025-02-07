@@ -55,7 +55,7 @@ client.on('message', async msg => {
     const name = contact.pushname ? contact.pushname.split(" ")[0] : "usuário";
 
     // Se for a primeira mensagem do usuário
-    if (!chamados[remetente] && /^(iniciar|boa noite|boa dia|boa tarde|Olá|olá|oboai||ola|oii|dia|tarde|noite|bom|hello|oie|eai|prezados|prezado|opa|caros|paulo|suporte|tecnologia|bot|OI|Oi|oI|Olá|OLÁ|OLA|)$/i.test(msg.body)) {
+    if (!chamados[remetente] && /^(iniciar|boa noite|boa dia|boa tarde|Olá|olá|oboai||ola|oii|dia|tarde|noite|bom|hello|oie|eai|prezados|prezado|opa|caros|suporte|tecnologia|bot|OI|Oi|oI|Olá|OLÁ|OLA|)$/i.test(msg.body)) {
         await sendMessageWithDelay(remetente, `Olá, ${name}! 😊\nBem-vindo ao EnvisionBot! 🚀\n\nPor favor, informe o número do seu chamado (5 dígitos).`);
         await sendMessageWithDelay(remetente, `Caso não tenha um número de chamado, envie uma email para suporte@email.com.br ou acesso o link abaixo\n https://link.com/login`);
         return;
