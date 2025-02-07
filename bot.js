@@ -96,10 +96,10 @@ client.on('message', async msg => {
             console.log(`Cliente ${remetente} selecionou a opção 3 - Falar com um atendente.`);
             break;
         case '4':
-            await sendMessageWithDelay(remetente, 'Clique no link abaixo para falar com o financeiro.\n\nhttps://wa.me/5511941614016\n\nOu digite 0️⃣ para voltar ao menu.');
+            await sendMessageWithDelay(remetente, 'Clique no link abaixo para falar com o financeiro.\n\nhttps://wa.me/5511900000000\n\nOu digite 0️⃣ para voltar ao menu.');
             break;
         case '5':
-            await sendMessageWithDelay(remetente, 'Clique no link abaixo para falar com o comercial.\n\nhttps://wa.me/5511982687656\n\nOu digite 0️⃣ para voltar ao menu.');
+            await sendMessageWithDelay(remetente, 'Clique no link abaixo para falar com o comercial.\n\nhttps://wa.me/5511900000000\n\nOu digite 0️⃣ para voltar ao menu.');
             break;
         case '6':
             await sendMessageWithDelay(remetente, 'Espero ter ajudado! Caso tenha mais alguma dúvida, estarei por aqui.');
