@@ -1,4 +1,5 @@
 // Importação de módulos
+const puppeteer = require('puppeteer-core');  // Importa o Puppeteer
 const qrcode = require('qrcode-terminal');
 const qrcodeImage = require('qrcode');
 const fs = require('fs');
@@ -10,6 +11,17 @@ const delay = ms => new Promise(res => setTimeout(res, ms)); // Função de dela
 let chamados = {}; // Armazena números de chamados
 let activeListeners = new Map(); // Evita duplicação de listeners
 let atendimentoSuspenso = new Set(); // Armazena usuários que falarão com atendente humano
+
+// Inicia o Puppeteer para garantir que o navegador seja executado corretamente no ambiente do Railway
+(async () => {
+    const browser = await puppeteer.launch({
+        executablePath: '/usr/bin/chromium',  // Defina o caminho correto do Chromium no Railway
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Argumentos necessários para o Railway
+    });
+
+    console.log('Puppeteer iniciado com sucesso!');
+    await browser.close();
+})();
 
 // Serviço de leitura do QR Code
 client.on('qr', async qr => {
