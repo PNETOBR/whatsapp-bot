@@ -1,5 +1,7 @@
 // Importação de módulos
 const qrcode = require('qrcode-terminal');
+const qrcodeImage = require('qrcode');
+const fs = require('fs');
 const { Client } = require('whatsapp-web.js');
 
 const client = new Client();
@@ -10,7 +12,12 @@ let activeListeners = new Map(); // Evita duplicação de listeners
 let atendimentoSuspenso = new Set(); // Armazena usuários que falarão com atendente humano
 
 // Serviço de leitura do QR Code
-client.on('qr', qr => qrcode.generate(qr, { small: true }));
+client.on('qr', async qr => {
+    qrcode.generate(qr, { small: true });
+    console.log('⚡ QR Code recebido! Gerando imagem...');
+    await qrcodeImage.toFile('./qrcode.png', qr);  // Salva como arquivo PNG
+    console.log('✅ QR Code salvo! Baixe e escaneie o arquivo "qrcode.png".');
+});
 
 client.on('ready', () => console.log('✅ WhatsApp conectado!'));
 console.clear();
@@ -107,7 +114,6 @@ client.on('message', async msg => {
             delete chamados[remetente]; // Limpa os dados do chamado
             break;
         default:
-            //await sendMessageWithDelay(remetente, 'Opção inválida! Por favor, escolha uma das opções do menu.');
             break;
     }
 });
@@ -124,27 +130,4 @@ async function handleProblema(remetente) {
     if (activeListeners.has(remetente)) return;
 
     await sendMessageWithDelay(remetente, 'Descreva o seu problema para que possamos te ajudar.\n\nOu digite 0️⃣ para voltar ao menu.');
-
-    const problemListener = async newMsg => {
-        if (newMsg.from === remetente) {
-            if (newMsg.body === '0' || /^(menu|voltar)$/i.test(newMsg.body)) {
-                client.removeListener('message', problemListener);
-                activeListeners.delete(remetente);
-                await sendMessageWithDelay(remetente, `Voltando ao menu principal...`);
-                await showMainMenu(remetente);
-                return;
-            }
-
-            chamados[remetente].problema = newMsg.body;
-            console.log(`Problema registrado para ${chamados[remetente].nome}: ${newMsg.body}`);
-
-            await sendMessageWithDelay(remetente, 'Obrigado por relatar o problema! Nossa equipe analisará a sua solicitação.');
-
-            client.removeListener('message', problemListener);
-            activeListeners.delete(remetente);
-        }
-    };
-
-    client.on('message', problemListener);
-    activeListeners.set(remetente, problemListener);
 }
